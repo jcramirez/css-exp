@@ -1,0 +1,146 @@
+<html>
+    <head>
+
+        <style>
+            @import 'https://fonts.googleapis.com/css?family=Open+Sans';
+        </style>
+
+        <style type="text/css">
+            body {
+                height: 100%;
+                width:  100%;
+                transition: background-color 0.5s ease;
+                background-color: #425674;
+            }
+
+            #container {
+              height: 50px;
+            width: 200px;
+              /*position: fix;*/
+            }
+
+            .box {
+                height: 50px;
+                width: 200px;
+                background-color: white;
+                border-radius: 10px;
+                transition: transform 0.5s ease;
+                position: absolute;
+                top: 0;
+                left: 0;
+                border-width:0px;
+                border:none;
+            }
+
+            .field {
+                height: 50px;
+                width: 200px;
+                /*background-color: white;*/
+                background-color: white;
+                border-radius: 10px;
+                transition: transform 0.5s ease;
+                position: absolute;
+                top: 0;
+                left: 0;
+                margin-left: 10px;
+                font-size: 20px;
+                font-family: 'Open Sans', sans-serif;
+                border-width:0px;
+                border:none;
+                z-index: 1;
+            }
+
+            .centered {
+                position: absolute; /* or absolute */
+                top: 50%;
+                left: 50%;
+
+                margin-top: -25px;
+                margin-left: -100px;
+
+            }
+
+            .turned {
+                transform: rotateX(180deg);
+            }
+
+            textarea:focus, input:focus{
+                outline: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" class="centered">
+            <div class="box">
+            </div>
+            <form>
+                <input class="field" type="text" placeholder="Username" value=""><br>
+                <input class="field turned" type="text" placeholder="Password" value=""><br>
+            </form>
+        </div>
+
+
+
+
+        <script src="https://code.jquery.com/jquery-3.0.0.min.js" integrity="sha256-JmvOoLtYsmqlsWxa7mDSLMwa6dZ9rrIdtrrVYRnDRH0=" crossorigin="anonymous"></script>
+
+        <script type="text/javascript">
+            $(document).ready(function(){
+                var state = 0;
+
+                var loginInfo = {
+                    username: '',
+                    password: ''
+                };
+
+                $("form input").focus();
+
+                $("form input").keydown(function (e) {
+                    // console.log("box");
+                    if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+                        e.preventDefault();
+
+                        /*
+                        uses the state var as an index for the array returned by .keys()
+                        since there are only two elements in the loginInfo object state works
+                        perfectly. index 0 === username and index 1 === password
+                        */
+                        var key = Object.keys(loginInfo)[state];
+                        loginInfo[key] = $("form input").val();
+
+                        console.log(loginInfo);
+
+                        flipBox();
+
+                        return false;
+                    }
+                });
+
+                function flipBox() {
+                    if(state === 1) { // going back to username case
+                        $("form input").attr({type: 'text', placeholder: 'Username'})
+                        $("form input").val('')
+
+                        $('body').css('background-color', '#425674');
+                        $('.box').css({transform: 'rotateX(0deg)'});
+                        $("form input").css({transform: 'rotateX(0deg)'});
+
+                    } else { // going back to password case
+                        $("form input").attr({type: 'password', placeholder: 'Password'})
+                        $("form input").val('')
+
+                        $('body').css('background-color', '#5EAD95');
+                        $('.box').css({transform: 'rotateX(180deg)'});
+                        $("form input").css({transform: 'rotateX(180deg)'});
+                    }
+                    // transform: rotate(180deg);
+                    state ^= true;
+                }
+            });
+        </script>
+
+
+    </body>
+
+
+</html>
